@@ -376,6 +376,13 @@ COPY config/local.conf /etc/fonts/local.conf
 
 # Copy default icon file.
 COPY resources/linux.png /usr/share/icons/wsl/linux.png
+COPY resources/overlay.png /usr/share/icons/wsl/overlay.png
+COPY resources/Papirus-Dark.tar.gz /usr/share/icons/Papirus-Dark.tar.gz
+COPY resources/BreezeX-Dark.tar.gz /usr/share/icons/BreezeX-Dark.tar.gz
+
+# Unzip the theme files
+RUN tar -xzvf /usr/share/icons/Papirus-Dark.tar.gz -C /usr/share/icons && rm /usr/share/icons/Papirus-Dark.tar.gz
+RUN tar -xzvf /usr/share/icons/BreezeX-Dark.tar.gz -C /usr/share/icons && rm /usr/share/icons/BreezeX-Dark.tar.gz
 
 # Copy the built artifacts from the build stage.
 COPY --from=dev /work/build/usr/ /usr/
