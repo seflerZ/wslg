@@ -1,5 +1,5 @@
 # Create a builder image with the compilers, etc. needed
-FROM mcr.microsoft.com/cbl-mariner/base/core:2.0.20230107 AS build-env
+FROM mcr.microsoft.com/cbl-mariner/base/core:2.0.20230630 AS build-env
 
 # Install all the required packages for building. This list is probably
 # longer than necessary.
@@ -182,7 +182,6 @@ WORKDIR /work/vendor/mesa
 RUN /usr/bin/meson --prefix=${PREFIX} build \
         --buildtype=${BUILDTYPE_NODEBUGSTRIP} \
         -Dgallium-drivers=swrast,d3d12 \
-        -Ddri-drivers= \
         -Dvulkan-drivers= \
         -Dllvm=disabled && \
     ninja -C build -j8 install && \
@@ -307,7 +306,7 @@ RUN if [ -z "$SYSTEMDISTRO_DEBUG_BUILD" ] ; then \
 
 ## Create the distro image with just what's needed at runtime
 
-FROM mcr.microsoft.com/cbl-mariner/base/core:2.0.20230107 AS runtime
+FROM mcr.microsoft.com/cbl-mariner/base/core:2.0.20230630 AS runtime
 
 RUN echo "== Install Core/UI Runtime Dependencies ==" && \
     tdnf    install -y \
@@ -332,6 +331,7 @@ RUN echo "== Install Core/UI Runtime Dependencies ==" && \
             libxkbcommon \
             libXrandr \
             iproute \
+            nftables \
             pango \
             procps-ng \
             rpm \
